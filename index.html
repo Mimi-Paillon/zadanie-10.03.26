@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Книжный каталог — Libraria</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- ====== HEADER ====== -->
+  <header>
+    <div class="header-inner">
+      <a href="#" class="logo">Lib<span>raria</span></a>
+      <div class="search-bar">
+        <input type="text" placeholder="Поиск книг, авторов, жанров...">
+        <button>🔍</button>
+      </div>
+      <div class="header-actions">
+        <button class="btn-ghost">📚 Корзина (0)</button>
+        <button class="btn-ghost">Войти</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ====== HERO ====== -->
+  <div class="hero-banner">
+    <h1>Каталог книг — <em>более 12 000 изданий</em></h1>
+    <p>Художественная литература, нон-фикшн, классика и современность</p>
+  </div>
+
+  <!-- ====== MAIN PAGE ====== -->
+  <div class="page-wrap">
+
+    <!-- SIDEBAR FILTERS -->
+    <aside>
+      <button class="mobile-filter-toggle" onclick="toggleFilters()">🎛 Фильтры и сортировка</button>
+      <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+          <span>Фильтры</span>
+          <button class="filter-reset" onclick="resetFilters()">Сбросить все</button>
+        </div>
+
+        <!-- FILTER 1: Жанр (чекбоксы) -->
+        <div class="filter-group">
+          <div class="filter-group-title">Жанр</div>
+          <div class="check-list">
+            <label class="check-item">
+              <input type="checkbox" checked>
+              <div class="check-box"></div>
+              Классика <span class="check-count">347</span>
+            </label>
+            <label class="check-item">
+              <input type="checkbox">
+              <div class="check-box"></div>
+              Детектив <span class="check-count">512</span>
+            </label>
+            <label class="check-item">
+              <input type="checkbox" checked>
+              <div class="check-box"></div>
+              Фантастика <span class="check-count">891</span>
+            </label>
+            <label class="check-item">
+              <input type="checkbox">
+              <div class="check-box"></div>
+              Романтика <span class="check-count">634</span>
+            </label>
+            <label class="check-item">
+              <input type="checkbox">
+              <div class="check-box"></div>
+              Нон-фикшн <span class="check-count">428</span>
+            </label>
+            <label class="check-item">
+              <input type="checkbox">
+              <div class="check-box"></div>
+              Биография <span class="check-count">215</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- FILTER 2: Цена (двойной ползунок) -->
+        <div class="filter-group">
+          <div class="filter-group-title">Цена (₽)</div>
+          <div class="price-range">
+            <div class="price-inputs">
+              <input type="number" id="priceMin" value="0" min="0" max="5000">
+              <input type="number" id="priceMax" value="2000" min="0" max="5000">
+            </div>
+            <div class="slider-track">
+              <div class="slider-fill" id="sliderFill"></div>
+              <input type="range" id="rangeMin" min="0" max="5000" value="0" oninput="updateSlider()">
+              <input type="range" id="rangeMax" min="0" max="5000" value="2000" oninput="updateSlider()">
+            </div>
+          </div>
+        </div>
+
+        <!-- FILTER 3: Рейтинг (радиокнопки) -->
+        <div class="filter-group">
+          <div class="filter-group-title">Минимальный рейтинг</div>
+          <div class="rating-filter">
+            <label class="rating-row">
+              <input type="radio" name="rating" value="0" checked>
+              <span>Любой</span>
+            </label>
+            <label class="rating-row selected">
+              <input type="radio" name="rating" value="4">
+              <span class="stars">★★★★</span><span>+</span>
+              <span class="star-count">4 023</span>
+            </label>
+            <label class="rating-row">
+              <input type="radio" name="rating" value="3">
+              <span class="stars">★★★</span><span>+</span>
+              <span class="star-count">8 741</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- FILTER 4: Язык (чекбоксы) -->
+        <div class="filter-group">
+          <div class="filter-group-title">Язык издания</div>
+          <div class="check-list">
+            <label class="check-item">
+              <input type="checkbox" checked>
+              <div class="check-box"></div>
+              Русский <span class="check-count">9 124</span>
+            </label>
+            <label class="check-item">
+              <input type="checkbox">
+              <div class="check-box"></div>
+              Английский <span class="check-count">2 381</span>
+            </label>
+            <label class="check-item">
+              <input type="checkbox">
+              <div class="check-box"></div>
+              Немецкий <span class="check-count">487</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- FILTER 5: Год издания (чекбоксы) -->
+        <div class="filter-group">
+          <div class="filter-group-title">Год издания</div>
+          <div class="check-list">
+            <label class="check-item">
+              <input type="checkbox" checked>
+              <div class="check-box"></div>
+              2020–2025 <span class="check-count">1 203</span>
+            </label>
+            <label class="check-item">
+              <input type="checkbox">
+              <div class="check-box"></div>
+              2010–2019 <span class="check-count">3 417</span>
+            </label>
+            <label class="check-item">
+              <input type="checkbox">
+              <div class="check-box"></div>
+              До 2010 <span class="check-count">7 502</span>
+            </label>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+      <div class="toolbar">
+        <div class="results-info">Найдено <strong>2 847</strong> книг</div>
+        <div class="sort-group">
+          <span class="sort-label">Сортировка:</span>
+          <select class="sort-select">
+            <option>По популярности</option>
+            <option>По цене (↑)</option>
+            <option>По цене (↓)</option>
+            <option>По рейтингу</option>
+            <option>Новинки</option>
+          </select>
+          <div class="view-toggle">
+            <button class="view-btn active" title="Сетка">⊞</button>
+            <button class="view-btn" title="Список">☰</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Активные теги выбранных фильтров -->
+      <div class="active-filters">
+        <div class="filter-tag">Классика <span>✕</span></div>
+        <div class="filter-tag">Фантастика <span>✕</span></div>
+        <div class="filter-tag">Русский язык <span>✕</span></div>
+        <div class="filter-tag">2020–2025 <span>✕</span></div>
+      </div>
+
+      <!-- CARDS GRID — 8 карточек -->
+      <div class="cards-grid">
+
+        <article class="book-card">
+          <div class="card-badge sale">−20%</div>
+          <div class="card-cover cover-1">
+            <div class="cover-placeholder">
+              <div class="cover-icon">📖</div>
+              <div class="cover-title">Мастер и Маргарита</div>
+              <div class="cover-author">М. Булгаков</div>
+            </div>
+            <button class="card-like" onclick="toggleLike(this)">♡</button>
+          </div>
+          <div class="card-body">
+            <div class="card-genre">Классика · Мистика</div>
+            <div class="card-title">Мастер и Маргарита</div>
+            <div class="card-author">Михаил Булгаков</div>
+            <div class="card-rating">
+              <span class="card-stars">★★★★★</span>
+              <span class="card-reviews">(4 281)</span>
+            </div>
+          </div>
+          <div class="card-comment">
+            <textarea placeholder="Оставить комментарий..."></textarea>
+          </div>
+          <div class="card-footer">
+            <div class="card-price">
+              <span class="price-current">399₽</span>
+              <span class="price-old">499₽</span>
+            </div>
+            <button class="btn-cart">В корзину</button>
+          </div>
+        </article>
+
+        <article class="book-card">
+          <div class="card-badge new">Новинка</div>
+          <div class="card-cover cover-2">
+            <div class="cover-placeholder">
+              <div class="cover-icon">🚀</div>
+              <div class="cover-title">Основание</div>
+              <div class="cover-author">А. Азимов</div>
+            </div>
+            <button class="card-like liked" onclick="toggleLike(this)">♥</button>
+          </div>
+          <div class="card-body">
+            <div class="card-genre">Фантастика · Эпопея</div>
+            <div class="card-title">Основание</div>
+            <div class="card-author">Айзек Азимов</div>
+            <div class="card-rating">
+              <span class="card-stars">★★★★★</span>
+              <span class="card-reviews">(3 942)</span>
+            </div>
+          </div>
+          <div class="card-comment">
+            <textarea placeholder="Оставить комментарий..."></textarea>
+          </div>
+          <div class="card-footer">
+            <div class="card-price">
+              <span class="price-current">549₽</span>
+            </div>
+            <button class="btn-cart">В корзину</button>
+          </div>
+        </article>
+
+        <article class="book-card">
+          <div class="card-cover cover-3">
+            <div class="cover-placeholder">
+              <div class="cover-icon">🌊</div>
+              <div class="cover-title">Преступление и наказание</div>
+              <div class="cover-author">Ф. Достоевский</div>
+            </div>
+            <button class="card-like" onclick="toggleLike(this)">♡</button>
+          </div>
+          <div class="card-body">
+            <div class="card-genre">Классика · Психология</div>
+            <div class="card-title">Преступление и наказание</div>
+            <div class="card-author">Фёдор Достоевский</div>
+            <div class="card-rating">
+              <span class="card-stars">★★★★★</span>
+              <span class="card-reviews">(5 108)</span>
+            </div>
+          </div>
+          <div class="card-comment">
+            <textarea placeholder="Оставить комментарий..."></textarea>
+          </div>
+          <div class="card-footer">
+            <div class="card-price">
+              <span class="price-current">329₽</span>
+            </div>
+            <button class="btn-cart">В корзину</button>
+          </div>
+        </article>
+
+        <article class="book-card">
+          <div class="card-badge sale">−30%</div>
+          <div class="card-cover cover-4">
+            <div class="cover-placeholder">
+              <div class="cover-icon">🌌</div>
+              <div class="cover-title">Дюна</div>
+              <div class="cover-author">Ф. Херберт</div>
+            </div>
+            <button class="card-like" onclick="toggleLike(this)">♡</button>
+          </div>
+          <div class="card-body">
+            <div class="card-genre">Фантастика · Философия</div>
+            <div class="card-title">Дюна</div>
+            <div class="card-author">Фрэнк Херберт</div>
+            <div class="card-rating">
+              <span class="card-stars">★★★★★</span>
+              <span class="card-reviews">(6 753)</span>
+            </div>
+          </div>
+          <div class="card-comment">
+            <textarea placeholder="Оставить комментарий..."></textarea>
+          </div>
+          <div class="card-footer">
+            <div class="card-price">
+              <span class="price-current">489₽</span>
+              <span class="price-old">699₽</span>
+            </div>
+            <button class="btn-cart">В корзину</button>
+          </div>
+        </article>
+
+        <article class="book-card">
+          <div class="card-cover cover-5">
+            <div class="cover-placeholder">
+              <div class="cover-icon">🏰</div>
+              <div class="cover-title">Война и мир</div>
+              <div class="cover-author">Л. Толстой</div>
+            </div>
+            <button class="card-like" onclick="toggleLike(this)">♡</button>
+          </div>
+          <div class="card-body">
+            <div class="card-genre">Классика · История</div>
+            <div class="card-title">Война и мир</div>
+            <div class="card-author">Лев Толстой</div>
+            <div class="card-rating">
+              <span class="card-stars">★★★★☆</span>
+              <span class="card-reviews">(2 934)</span>
+            </div>
+          </div>
+          <div class="card-comment">
+            <textarea placeholder="Оставить комментарий..."></textarea>
+          </div>
+          <div class="card-footer">
+            <div class="card-price">
+              <span class="price-current">599₽</span>
+            </div>
+            <button class="btn-cart">В корзину</button>
+          </div>
+        </article>
+
+        <article class="book-card">
+          <div class="card-badge new">Новинка</div>
+          <div class="card-cover cover-6">
+            <div class="cover-placeholder">
+              <div class="cover-icon">🤖</div>
+              <div class="cover-title">Нейромант</div>
+              <div class="cover-author">У. Гибсон</div>
+            </div>
+            <button class="card-like" onclick="toggleLike(this)">♡</button>
+          </div>
+          <div class="card-body">
+            <div class="card-genre">Киберпанк · Фантастика</div>
+            <div class="card-title">Нейромант</div>
+            <div class="card-author">Уильям Гибсон</div>
+            <div class="card-rating">
+              <span class="card-stars">★★★★☆</span>
+              <span class="card-reviews">(1 847)</span>
+            </div>
+          </div>
+          <div class="card-comment">
+            <textarea placeholder="Оставить комментарий..."></textarea>
+          </div>
+          <div class="card-footer">
+            <div class="card-price">
+              <span class="price-current">419₽</span>
+            </div>
+            <button class="btn-cart">В корзину</button>
+          </div>
+        </article>
+
+        <article class="book-card">
+          <div class="card-cover cover-7">
+            <div class="cover-placeholder">
+              <div class="cover-icon">🌹</div>
+              <div class="cover-title">Сто лет одиночества</div>
+              <div class="cover-author">Г.Г. Маркес</div>
+            </div>
+            <button class="card-like" onclick="toggleLike(this)">♡</button>
+          </div>
+          <div class="card-body">
+            <div class="card-genre">Классика · Магреализм</div>
+            <div class="card-title">Сто лет одиночества</div>
+            <div class="card-author">Г.Г. Маркес</div>
+            <div class="card-rating">
+              <span class="card-stars">★★★★★</span>
+              <span class="card-reviews">(4 617)</span>
+            </div>
+          </div>
+          <div class="card-comment">
+            <textarea placeholder="Оставить комментарий..."></textarea>
+          </div>
+          <div class="card-footer">
+            <div class="card-price">
+              <span class="price-current">379₽</span>
+            </div>
+            <button class="btn-cart">В корзину</button>
+          </div>
+        </article>
+
+        <article class="book-card">
+          <div class="card-badge sale">−15%</div>
+          <div class="card-cover cover-8">
+            <div class="cover-placeholder">
+              <div class="cover-icon">🗡️</div>
+              <div class="cover-title">1984</div>
+              <div class="cover-author">Дж. Оруэлл</div>
+            </div>
+            <button class="card-like liked" onclick="toggleLike(this)">♥</button>
+          </div>
+          <div class="card-body">
+            <div class="card-genre">Антиутопия · Классика</div>
+            <div class="card-title">1984</div>
+            <div class="card-author">Джордж Оруэлл</div>
+            <div class="card-rating">
+              <span class="card-stars">★★★★★</span>
+              <span class="card-reviews">(8 204)</span>
+            </div>
+          </div>
+          <div class="card-comment">
+            <textarea placeholder="Оставить комментарий..."></textarea>
+          </div>
+          <div class="card-footer">
+            <div class="card-price">
+              <span class="price-current">339₽</span>
+              <span class="price-old">399₽</span>
+            </div>
+            <button class="btn-cart">В корзину</button>
+          </div>
+        </article>
+
+      </div><!-- end cards-grid -->
+
+      <!-- PAGINATION -->
+      <div class="pagination-wrap">
+        <button class="btn-load-more">Показать ещё 24 книги</button>
+        <div class="pagination">
+          <button class="page-btn">‹</button>
+          <button class="page-btn active">1</button>
+          <button class="page-btn">2</button>
+          <button class="page-btn">3</button>
+          <span class="page-dots">…</span>
+          <button class="page-btn">47</button>
+          <button class="page-btn">›</button>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- ====== ЗАДАНИЕ 1: Прототип и описание ====== -->
+  <div class="prototype-section">
+    <h2 class="prototype-heading">📐 Задание 1 — Прототип и описание</h2>
+    <div class="proto-grid">
+
+      <div class="proto-card">
+        <h3>🖼 Схема страницы (wireframe)</h3>
+        <div class="wireframe">┌─────────────────────────────────┐
+│  HEADER: Логотип | Поиск | CTA  │
+├─────────────────────────────────┤
+│     HERO: Заголовок каталога    │
+├───────────┬─────────────────────┤
+│ ФИЛЬТРЫ   │ Toolbar: сорт/вид   │
+│           │ Активные теги       │
+│ [✓] Жанр  │ ┌────┐ ┌────┐ ┌──┐ │
+│ [✓] Жанр  │ │ 📖 │ │ 📖 │ │📖│ │
+│ [ ] Жанр  │ │Назв│ │Назв│ │  │ │
+│           │ │Авт.│ │Авт.│ │  │ │
+│ Цена [══] │ │★★★ │ │★★★ │ │  │ │
+│ [0]  [999]│ │999₽│ │999₽│ │  │ │
+│           │ └────┘ └────┘ └──┘ │
+│ Рейтинг   │ ┌────┐ ┌────┐ ┌──┐ │
+│ ○ Любой   │ │ 📖 │ │ 📖 │ │📖│ │
+│ ● ★★★★+   │ └────┘ └────┘ └──┘ │
+│           │                     │
+│ Язык      │  [Показать ещё 24]  │
+│ [✓] Рус.  │  < 1  2  3 … 47 >  │
+│ [ ] Eng   └─────────────────────┤
+└───────────┘                     └</div>
+      </div>
+
+      <div class="proto-card">
+        <h3>📝 Описание решений</h3>
+        <div class="desc-list">
+          <div class="desc-item">
+            <strong>Тематика и фильтры</strong>
+            Выбрана тема книжного каталога. Фильтры: жанр (чекбоксы — множественный выбор), цена (двойной ползунок — диапазон), рейтинг (радиокнопки — один вариант), язык и год (чекбоксы). Логика отражает реальные сценарии поиска книг.
+          </div>
+          <div class="desc-item">
+            <strong>Расположение элементов</strong>
+            Sidebar слева — стандарт для e-commerce, снижает когнитивную нагрузку. Карточки в adaptive-grid автоматически перетекают. Header sticky — постоянный доступ к поиску. Активные теги фильтров над сеткой — явная обратная связь.
+          </div>
+          <div class="desc-item">
+            <strong>Тип фильтрации</strong>
+            Клиентская фильтрация с debounce для быстрого отклика при смене чекбоксов/ползунка. При первой загрузке — серверный запрос с параметрами в URL (genre=classics&price_max=2000), что обеспечивает share-able ссылки и SEO.
+          </div>
+          <div class="desc-item">
+            <strong>Адаптив (мобильный экран)</strong>
+            До 900px: sidebar скрыт, появляется кнопка «Фильтры и сортировка» — тап открывает sidebar как оверлей. Сетка карточек: 2 колонки (от 160px). До 600px: поиск на всю ширину, шапка упрощается. Пагинация: только кнопка «Показать ещё».
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <footer>
+    © 2025 <span>Libraria</span> — учебный проект. Задания 1 и 2 по прототипированию и вёрстке каталога.
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
